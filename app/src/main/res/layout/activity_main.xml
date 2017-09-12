@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.qwqaq.classschedule.ActivityMain">
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:stretchColumns="*">
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_span="4">
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="周一"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="周二"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="周三"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="周四"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="周五"
+                android:textAlignment="center" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_span="4">
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="数学"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="数学"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="英语"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="语文"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="英语"
+                android:textAlignment="center" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_span="4">
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="英语"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="语文"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="语文"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="英语"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="语文"
+                android:textAlignment="center" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_span="4">
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="物理"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="英语"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="数学"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="数学"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="化学"
+                android:textAlignment="center" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_span="4">
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="语文"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="历史"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="音乐"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="体育"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="数学"
+                android:textAlignment="center" />
+
+        </TableRow>
+
+    </TableLayout>
+
+</android.support.constraint.ConstraintLayout>
