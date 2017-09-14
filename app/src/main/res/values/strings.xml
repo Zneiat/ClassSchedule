@@ -4,5 +4,5 @@
     <string name="navigation_drawer_open">显示侧边栏</string>
     <string name="navigation_drawer_close">隐藏侧边栏</string>
 
-    <string name="action_settings">设置</string>
+    <string name="settings">设置</string>
 </resources>

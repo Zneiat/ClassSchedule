@@ -3,13 +3,13 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/nav_schedule"
             android:icon="@drawable/ic_date_range_black_24dp"
             android:title="课程表"
             android:checked="true" />
         <item
-            android:id="@+id/nav_homework_list"
-            android:icon="@drawable/ic_bookmark_border_black_24dp"
+            android:id="@+id/nav_homework"
+            android:icon="@drawable/ic_receipt_black_24dp"
             android:title="作业单" />
 
         <item
