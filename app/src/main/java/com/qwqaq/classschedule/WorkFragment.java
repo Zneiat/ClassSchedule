@@ -7,13 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.qwqaq.classschedule.Ui.BaseMainFragment;
+import com.qwqaq.classschedule.Base.BaseFragment;
 
 /**
  * Created by Zneia on 2017/9/14.
  */
 
-public class WorkFragment extends BaseMainFragment {
+public class WorkFragment extends BaseFragment {
 
     public static WorkFragment newInstance()
     {

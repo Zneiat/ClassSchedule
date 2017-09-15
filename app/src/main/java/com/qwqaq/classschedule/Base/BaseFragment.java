@@ -1,19 +1,32 @@
-package com.qwqaq.classschedule.Ui;
+package com.qwqaq.classschedule.Base;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
-import com.qwqaq.classschedule.MainActivity;
-import com.qwqaq.classschedule.R;
 import com.qwqaq.classschedule.HomeFragment;
+import com.qwqaq.classschedule.R;
+
+import me.yokeyword.fragmentation.SupportFragment;
 
 /**
- * 懒加载
- * Created by YoKeyword on 16/6/5.
+ * Created by Zneia on 2017/9/15.
  */
-public abstract class BaseMainFragment extends BaseFragment
+
+public abstract class BaseFragment extends SupportFragment
 {
     protected OnBackToFirstListener _mBackToFirstListener;
 
@@ -41,9 +54,7 @@ public abstract class BaseMainFragment extends BaseFragment
     private long TOUCH_TIME = 0;
 
     /**
-     * 处理回退事件
-     *
-     * @return
+     * 返回键 点按事件
      */
     @Override
     public boolean onBackPressedSupport()
@@ -51,9 +62,9 @@ public abstract class BaseMainFragment extends BaseFragment
         // 隐藏软键盘
         hideSoftInput();
 
-        DrawerLayout drawer = (DrawerLayout) MainActivity.getMainActivity().findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (((BaseActivity)getActivity()).mLeftDrawer.isDrawerOpen(GravityCompat.START)) {
+            // 隐藏侧边栏
+            ((BaseActivity)getActivity()).mLeftDrawer.closeDrawer(GravityCompat.START);
             return true;
         }
 
@@ -79,5 +90,25 @@ public abstract class BaseMainFragment extends BaseFragment
     public interface OnBackToFirstListener
     {
         void onBackToFirstFragment();
+    }
+
+    protected Toolbar mTopToolbar; // 顶部工具条
+
+    /**
+     * 初始化 顶部工具条
+     */
+    protected void initTopBar(View view)
+    {
+        // Top Bar
+        mTopToolbar = (Toolbar) view.findViewById(R.id.toolbar);
+
+        Drawable iconDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_add_white_24dp);
+        mTopToolbar.setOverflowIcon(iconDrawable); // 修改右上角 三点 more options 图标
+        ((BaseActivity)getActivity()).setSupportActionBar(mTopToolbar);
+
+        // Left Nav
+        ActionBarDrawerToggle leftDrawerDisplayToggle = new ActionBarDrawerToggle(getActivity(), ((BaseActivity)getActivity()).mLeftDrawer, mTopToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ((BaseActivity)getActivity()).mLeftDrawer.setDrawerListener(leftDrawerDisplayToggle);
+        leftDrawerDisplayToggle.syncState();
     }
 }

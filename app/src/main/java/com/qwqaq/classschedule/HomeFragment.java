@@ -15,7 +15,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.qwqaq.classschedule.Ui.BaseMainFragment;
+import com.qwqaq.classschedule.Base.BaseFragment;
 import com.qwqaq.classschedule.Utils.DisplayUtil;
 import com.qwqaq.classschedule.Utils.StreamUtils;
 
@@ -28,7 +28,7 @@ import java.util.ArrayList;
  * Created by Zneia on 2017/9/14.
  */
 
-public class HomeFragment extends BaseMainFragment {
+public class HomeFragment extends BaseFragment {
 
     public static HomeFragment newInstance()
     {
@@ -49,6 +49,8 @@ public class HomeFragment extends BaseMainFragment {
     {
         mView = inflater.inflate(R.layout.home_fragment, container, false);
         context = mView.getContext();
+
+        initTopBar(mView);
 
         try {
             initTableLayout();
