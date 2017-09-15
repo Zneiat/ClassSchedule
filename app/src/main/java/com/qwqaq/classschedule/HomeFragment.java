@@ -2,7 +2,6 @@ package com.qwqaq.classschedule;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -29,13 +28,13 @@ import java.util.ArrayList;
  * Created by Zneia on 2017/9/14.
  */
 
-public class ScheduleFragment extends BaseMainFragment {
+public class HomeFragment extends BaseMainFragment {
 
-    public static ScheduleFragment newInstance()
+    public static HomeFragment newInstance()
     {
         Bundle args = new Bundle();
 
-        ScheduleFragment fragment = new ScheduleFragment();
+        HomeFragment fragment = new HomeFragment();
         fragment.setArguments(args);
 
         return fragment;
@@ -48,7 +47,7 @@ public class ScheduleFragment extends BaseMainFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        mView = inflater.inflate(R.layout.schedule_fragment, container, false);
+        mView = inflater.inflate(R.layout.home_fragment, container, false);
         context = mView.getContext();
 
         try {

@@ -3,12 +3,11 @@ package com.qwqaq.classschedule.Ui;
 import android.content.Context;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.qwqaq.classschedule.HomeActivity;
+import com.qwqaq.classschedule.MainActivity;
 import com.qwqaq.classschedule.R;
-import com.qwqaq.classschedule.ScheduleFragment;
+import com.qwqaq.classschedule.HomeFragment;
 
 /**
  * 懒加载
@@ -52,7 +51,7 @@ public abstract class BaseMainFragment extends BaseFragment
         // 隐藏软键盘
         hideSoftInput();
 
-        DrawerLayout drawer = (DrawerLayout) HomeActivity.getHomeActivity().findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) MainActivity.getMainActivity().findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
             return true;
@@ -61,7 +60,7 @@ public abstract class BaseMainFragment extends BaseFragment
         if (getChildFragmentManager().getBackStackEntryCount() > 1) {
             popChild();
         } else {
-            if (this instanceof ScheduleFragment) {
+            if (this instanceof HomeFragment) {
                 // 如果是 第一个Fragment 则执行退出app
                 if (System.currentTimeMillis() - TOUCH_TIME < WAIT_TIME) {
                     _mActivity.finish();
