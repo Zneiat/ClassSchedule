@@ -63,11 +63,12 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             // 第一行
             holder.classNameTextView.getPaint().setFakeBoldText(true);
         } else {
+            int currentNum = num - mColCount;
             // 当前列号 = 当前数字 % 总列数
-            int colNum = num % mColCount;
+            int colNum = currentNum % mColCount;
             if (colNum == 0) colNum = mColCount;
             // 当前行号 = ((总列数 - 当前列号) + 当前数字)) / 总列数
-            int rowNum = ((mColCount - colNum) + num) / mColCount;
+            int rowNum = ((mColCount - colNum) + currentNum) / mColCount;
 
             holder.itemView.setTag("(" + colNum + ", " + rowNum + ")");
             holder.itemView.setOnClickListener(mItemClickListener);
