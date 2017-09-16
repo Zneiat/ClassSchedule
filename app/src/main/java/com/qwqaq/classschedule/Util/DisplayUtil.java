@@ -1,4 +1,4 @@
-package com.qwqaq.classschedule.Utils;
+package com.qwqaq.classschedule.Util;
 
 import android.content.Context;
 

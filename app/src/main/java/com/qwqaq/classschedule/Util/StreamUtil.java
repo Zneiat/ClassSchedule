@@ -1,4 +1,4 @@
-package com.qwqaq.classschedule.Utils;
+package com.qwqaq.classschedule.Util;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
-public class StreamUtils {
+public class StreamUtil {
     @NonNull
     public static String get(Context context, int id) {
         InputStream stream = context.getResources().openRawResource(id);

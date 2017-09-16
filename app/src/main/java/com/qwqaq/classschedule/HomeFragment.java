@@ -6,18 +6,22 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.qwqaq.classschedule.Adapter.ScheduleAdapter;
 import com.qwqaq.classschedule.Base.BaseFragment;
-import com.qwqaq.classschedule.Utils.DisplayUtil;
-import com.qwqaq.classschedule.Utils.StreamUtils;
+import com.qwqaq.classschedule.Ui.ScheduleGridLayoutManager;
+import com.qwqaq.classschedule.Util.DisplayUtil;
+import com.qwqaq.classschedule.Util.StreamUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,8 +34,7 @@ import java.util.ArrayList;
 
 public class HomeFragment extends BaseFragment {
 
-    public static HomeFragment newInstance()
-    {
+    public static HomeFragment newInstance() {
         Bundle args = new Bundle();
 
         HomeFragment fragment = new HomeFragment();
@@ -45,15 +48,15 @@ public class HomeFragment extends BaseFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.home_fragment, container, false);
         context = mView.getContext();
 
         initTopBar(mView);
 
         try {
-            initTableLayout();
+            initScheduleData();
+            initSchedule();
         } catch (Exception e) {
             Log.e("初始化课程表", "发生错误", e);
             new AlertDialog.Builder(context)
@@ -67,66 +70,56 @@ public class HomeFragment extends BaseFragment {
                     }).show();
         }
 
-
         return mView;
     }
 
-    private ArrayList<String[]> tableData = new ArrayList<>();
+    private ArrayList<String> mScheduleData = new ArrayList<>();
+    RecyclerView mScheduleView;
 
-    private void initTableLayout() throws JSONException {
-        tableData.add(new String[]{"周一", "周二", "周三", "周四", "周五", "周六"});
-
-        // JSON 导入
-        String json = StreamUtils.get(context, R.raw.classes_default_data);
-        JSONArray jsonArr = new JSONArray(json);
-
-        for (int i = 0; i < jsonArr.length(); i++) {
-
-            JSONArray itemJsonArr = jsonArr.getJSONArray(i);
-            String[] itemArr = new String[itemJsonArr.length()];
-
-            for (int o = 0; o < itemJsonArr.length(); o++) {
-                itemArr[o] = itemJsonArr.getString(o);
-            }
-
-            tableData.add(itemArr);
+    private void initScheduleData() throws JSONException {
+        for (String item : new String[]{"周一", "周二", "周三", "周四", "周五", "周六"}) {
+            mScheduleData.add(item);
         }
 
-        // 控件
-        TableLayout layout = (TableLayout) mView.findViewById(R.id.class_schedule);
+        // JSON 导入
+        String allWeekClassesJson = StreamUtil.get(context, R.raw.classes_default_data);
+        JSONArray allWeekClasses = new JSONArray(allWeekClassesJson);
 
-        int itemIndex = 0;
-        for (String[] item : tableData) {
-            TableRow row = new TableRow(context);
-
-            if (itemIndex == 0) {
-                row.setPadding(0, 0, 0, DisplayUtil.dipToPx(context, 10));
-            }
-            if (itemIndex == 5) {
-                row.setPadding(0, DisplayUtil.dipToPx(context, 10), 0, 0);
-            }
-            for (int i = 0; i < item.length; i++) {
-                // TextView 控件
-                TextView text = new TextView(context);
-                text.setGravity(Gravity.CENTER);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                }
-                text.setHeight(DisplayUtil.dipToPx(context, 40));
-                text.setText(item[i]);
-                if (itemIndex == 0) {
-                    text.getPaint().setFakeBoldText(true);
-                    // text.setTextColor(Color.parseColor("#00a2ed"));
-                    text.setHeight(DisplayUtil.dipToPx(context, 25));
-                }
-
-                // 向 TableRow 中添加 TextView 控件
-                row.addView(text, i);
-            }
-
-            layout.addView(row); // 向布局控件添加新视图
-            itemIndex++;
+        for (int i = 0; i < allWeekClasses.length(); i++) {
+            String className = allWeekClasses.getString(i);
+            mScheduleData.add(className);
         }
     }
 
+    private void initSchedule() {
+        mScheduleView = mView.findViewById(R.id.schedule);
+
+        // 设置布局
+        int colCount = 6; // 指定列数
+        ScheduleGridLayoutManager gridLayoutManager = new ScheduleGridLayoutManager(this.getContext(), colCount);
+        gridLayoutManager.setScrollEnabled(false);
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return 1; // 单个项目 占一列
+            }
+        });
+
+        mScheduleView.setLayoutManager(gridLayoutManager);
+
+        // Adapter
+        ScheduleAdapter adapter = new ScheduleAdapter(getContext(), colCount, mScheduleData, new ScheduleAdapter.ItemClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "点击 " + v.getTag(), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(), "长按 " + v.getTag(), Toast.LENGTH_LONG).show();
+                return true;
+            }
+        });
+        mScheduleView.setAdapter(adapter);//设置数据
+    }
 }
