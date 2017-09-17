@@ -57,6 +57,7 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.top_toolbar_home_fragment, menu);
+        syncTopToolbarScheduleEditModeMenu(); // 顶部工具条 课程表编辑模式 菜单
         super.onCreateOptionsMenu(menu, inflater); // 必须的
     }
 
@@ -210,11 +211,9 @@ public class HomeFragment extends BaseFragment {
      * 编辑模式 进入
      */
     public void scheduleEditModeInto() {
-        RECYCLER_EDIT_MODE = true;
 
-        mTopToolbar.setTitle("编辑模式");
-        mTopToolbar.getMenu().setGroupVisible(R.id.normal_group, false);
-        mTopToolbar.getMenu().setGroupVisible(R.id.schedule_edit_mode_group, true);
+        RECYCLER_EDIT_MODE = true;
+        syncTopToolbarScheduleEditModeMenu(); // 必须保持在后
 
         Snackbar.make(mView, "现在 每节课 可以 点击编辑 长按拖动 了", Snackbar.LENGTH_LONG).show();
     }
@@ -232,12 +231,23 @@ public class HomeFragment extends BaseFragment {
 
         // TODO: 保存操作
 
-        // TopToolBar 还原
-        mTopToolbar.setTitle(getFragmentTitle());
-        mTopToolbar.getMenu().setGroupVisible(R.id.normal_group, true);
-        mTopToolbar.getMenu().setGroupVisible(R.id.schedule_edit_mode_group, false);
-
         RECYCLER_EDIT_MODE = false;
+        syncTopToolbarScheduleEditModeMenu();
+    }
+
+    /**
+     * 同步 顶部 Toolbar 课程表 编辑模式
+     */
+    public void syncTopToolbarScheduleEditModeMenu() {
+        if (RECYCLER_EDIT_MODE) {
+            mTopToolbar.setTitle("编辑模式");
+            mTopToolbar.getMenu().setGroupVisible(R.id.normal_group, false);
+            mTopToolbar.getMenu().setGroupVisible(R.id.schedule_edit_mode_group, true);
+        } else {
+            mTopToolbar.setTitle(getFragmentTitle());
+            mTopToolbar.getMenu().setGroupVisible(R.id.normal_group, true);
+            mTopToolbar.getMenu().setGroupVisible(R.id.schedule_edit_mode_group, false);
+        }
     }
 
     /**

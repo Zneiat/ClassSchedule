@@ -31,6 +31,8 @@
             android:id="@+id/action_new_note"
             android:title="添加笔记"
             app:showAsAction="never" />
+
+
     </group>
 
     <group android:id="@+id/schedule_edit_mode_group"
