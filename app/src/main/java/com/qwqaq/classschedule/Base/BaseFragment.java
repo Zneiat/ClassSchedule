@@ -4,12 +4,9 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,13 +23,17 @@ import me.yokeyword.fragmentation.SupportFragment;
  * Created by Zneia on 2017/9/15.
  */
 
-public abstract class BaseFragment extends SupportFragment
-{
+public abstract class BaseFragment extends SupportFragment {
+
     protected OnBackToFirstListener _mBackToFirstListener;
 
+    // 定义 Fragment 标题
+    public String getFragmentTitle() {
+        return getActivity().getTitle().toString();
+    }
+
     @Override
-    public void onAttach(Context context)
-    {
+    public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnBackToFirstListener) {
             _mBackToFirstListener = (OnBackToFirstListener) context;
@@ -43,8 +44,7 @@ public abstract class BaseFragment extends SupportFragment
     }
 
     @Override
-    public void onDetach()
-    {
+    public void onDetach() {
         super.onDetach();
         _mBackToFirstListener = null;
     }
@@ -57,14 +57,13 @@ public abstract class BaseFragment extends SupportFragment
      * 返回键 点按事件
      */
     @Override
-    public boolean onBackPressedSupport()
-    {
+    public boolean onBackPressedSupport() {
         // 隐藏软键盘
         hideSoftInput();
 
-        if (((BaseActivity)getActivity()).mLeftDrawer.isDrawerOpen(GravityCompat.START)) {
+        if (((BaseMainActivity) getActivity()).mLeftDrawer.isDrawerOpen(GravityCompat.START)) {
             // 隐藏侧边栏
-            ((BaseActivity)getActivity()).mLeftDrawer.closeDrawer(GravityCompat.START);
+            ((BaseMainActivity) getActivity()).mLeftDrawer.closeDrawer(GravityCompat.START);
             return true;
         }
 
@@ -87,8 +86,7 @@ public abstract class BaseFragment extends SupportFragment
         return true;
     }
 
-    public interface OnBackToFirstListener
-    {
+    public interface OnBackToFirstListener {
         void onBackToFirstFragment();
     }
 
@@ -97,18 +95,37 @@ public abstract class BaseFragment extends SupportFragment
     /**
      * 初始化 顶部工具条
      */
-    protected void initTopBar(View view)
-    {
-        // Top Bar
+    protected void initTopBar(View view, boolean hasOptionsMenu) {
+        // TopBar
         mTopToolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        mTopToolbar.setTitle(getFragmentTitle()); // 设置标题
 
         Drawable iconDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_add_white_24dp);
         mTopToolbar.setOverflowIcon(iconDrawable); // 修改右上角 三点 more options 图标
-        ((BaseActivity)getActivity()).setSupportActionBar(mTopToolbar);
+        ((BaseMainActivity) getActivity()).setSupportActionBar(mTopToolbar);
 
-        // Left Nav
-        ActionBarDrawerToggle leftDrawerDisplayToggle = new ActionBarDrawerToggle(getActivity(), ((BaseActivity)getActivity()).mLeftDrawer, mTopToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        ((BaseActivity)getActivity()).mLeftDrawer.setDrawerListener(leftDrawerDisplayToggle);
+        // TopBar Left Part LeftDrawer Open/Hide Toggle Btn
+        ActionBarDrawerToggle leftDrawerDisplayToggle = new ActionBarDrawerToggle(getActivity(), ((BaseMainActivity) getActivity()).mLeftDrawer, mTopToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ((BaseMainActivity) getActivity()).mLeftDrawer.setDrawerListener(leftDrawerDisplayToggle);
         leftDrawerDisplayToggle.syncState();
+
+        // TopBar Right Part OptionsMenu
+        setHasOptionsMenu(hasOptionsMenu);
+    }
+
+    /**
+     * 顶部工具条 右侧菜单 创建
+     */
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // 将每一个图标颜色改为白色
+        for (int i = 0, size = menu.size(); i < size; i++) {
+            MenuItem item = menu.getItem(i);
+            Drawable drawable = item.getIcon();
+            if (drawable != null) {
+                drawable.mutate();
+                drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+            }
+        }
     }
 }

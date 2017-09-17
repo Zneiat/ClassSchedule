@@ -6,17 +6,22 @@
 
     <PreferenceCategory
         android:layout="@layout/preference_category_widget"
+        android:title="课程表">
+        <Preference
+            android:key="schedule_go_to_edit_mode"
+            android:layout="@layout/preference_item"
+            android:title="编辑课程表"
+            android:summary="进入课程表编辑模式" />
+    </PreferenceCategory>
+
+    <!--<PreferenceCategory
+        android:layout="@layout/preference_category_widget"
         android:title="基本">
         <CheckBoxPreference
             android:layout="@layout/preference_item"
             android:title="省流量模式"
             android:summary="仅在Wi-Fi环境下才自动加载图片" />
-        <Preference
-            android:key="clear"
-            android:layout="@layout/preference_item"
-            android:title="清空缓存"
-            android:summary="删除已缓存的文章内容及图片" />
-    </PreferenceCategory>
+    </PreferenceCategory>-->
 
     <PreferenceCategory
         android:layout="@layout/preference_category_widget"
