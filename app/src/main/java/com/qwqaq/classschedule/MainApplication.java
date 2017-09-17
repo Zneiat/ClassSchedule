@@ -3,6 +3,9 @@ package com.qwqaq.classschedule;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.qwqaq.classschedule.Base.BaseFragment;
+
 import me.yokeyword.fragmentation.Fragmentation;
 import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.fragmentation.helper.ExceptionHandler;
@@ -13,14 +16,16 @@ import me.yokeyword.fragmentation.helper.ExceptionHandler;
 
 public class MainApplication extends Application
 {
-    public static SupportFragment[] gFragments = new SupportFragment[2];
+    public static BaseFragment[] gFragments = new BaseFragment[2];
+    public static final int F_HOME = 0;
+    public static final int F_WORK = 1;
 
     @Override
     public void onCreate()
     {
         super.onCreate();
 
-        gFragments = new SupportFragment[2];
+        gFragments = new BaseFragment[2];
 
         /*Fragmentation.builder()
                 // 设置 栈视图 模式为 悬浮球模式   SHAKE: 摇一摇唤出   NONE：隐藏

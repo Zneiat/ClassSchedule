@@ -13,6 +13,8 @@
         android:layout_height="match_parent"
         tools:context="com.qwqaq.classschedule.MainActivity">
 
+        <include layout="@layout/top_toolbar_main_activity" />
+
         <include layout="@layout/content_main_activity" />
 
     </android.support.design.widget.CoordinatorLayout>

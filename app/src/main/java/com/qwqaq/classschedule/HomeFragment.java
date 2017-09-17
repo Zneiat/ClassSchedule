@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,31 +53,29 @@ public class HomeFragment extends BaseFragment {
     }
 
     /**
-     * 顶部工具条 右侧菜单 创建
+     * 顶部工具条操作按钮 选项菜单 初始化
      */
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onTopToolbarCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.top_toolbar_home_fragment, menu);
-        syncTopToolbarScheduleEditModeMenu(); // 顶部工具条 课程表编辑模式 菜单
-        super.onCreateOptionsMenu(menu, inflater); // 必须的
+        syncTopToolbarScheduleEditModeMenu();
     }
 
     /**
      * 顶部工具条操作按钮 点击事件
      */
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public void onTopToolbarOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
 
         if (id == R.id.action_new_reminder) {
-
+            Snackbar.make(mView, "添加提醒 将来开发", Snackbar.LENGTH_LONG).show();
         }
         if (id == R.id.action_new_todo) {
-
+            Snackbar.make(mView, "添加待办 即将开发", Snackbar.LENGTH_LONG).show();
         }
         if (id == R.id.action_new_note) {
-
+            Snackbar.make(mView, "添加笔记 敬请期待", Snackbar.LENGTH_LONG).show();
         }
 
         // 课程表 编辑模式
@@ -88,9 +87,6 @@ public class HomeFragment extends BaseFragment {
             // 放弃保存
             scheduleEditModeExit(false);
         }
-
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Nullable
@@ -98,8 +94,6 @@ public class HomeFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.home_fragment, container, false);
         context = mView.getContext();
-
-        initTopBar(mView, true);
 
         try {
             initScheduleData();
@@ -215,7 +209,7 @@ public class HomeFragment extends BaseFragment {
         RECYCLER_EDIT_MODE = true;
         syncTopToolbarScheduleEditModeMenu(); // 必须保持在后
 
-        Snackbar.make(mView, "现在 每节课 可以 点击编辑 长按拖动 了", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(mView, "单击编辑内容 长按拖动位置", Snackbar.LENGTH_LONG).show();
     }
 
     /**
@@ -224,7 +218,7 @@ public class HomeFragment extends BaseFragment {
      */
     public void scheduleEditModeExit(boolean saveData) {
         if (saveData) {
-            Snackbar.make(mView, "编辑已保存 [其实并未保存，以后再完成 TODO]", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(mView, "编辑已保存 [其实并未保存，以后再完成这个功能]", Snackbar.LENGTH_LONG).show();
         } else {
             Snackbar.make(mView, "编辑未保存", Snackbar.LENGTH_LONG).show();
         }
@@ -239,14 +233,16 @@ public class HomeFragment extends BaseFragment {
      * 同步 顶部 Toolbar 课程表 编辑模式
      */
     public void syncTopToolbarScheduleEditModeMenu() {
+        MainActivity mainActivity = (MainActivity) getActivity();
+        Toolbar toolbar = mainActivity.getTopToolBar();
         if (RECYCLER_EDIT_MODE) {
-            mTopToolbar.setTitle("编辑模式");
-            mTopToolbar.getMenu().setGroupVisible(R.id.normal_group, false);
-            mTopToolbar.getMenu().setGroupVisible(R.id.schedule_edit_mode_group, true);
+            toolbar.setTitle("编辑模式");
+            toolbar.getMenu().setGroupVisible(R.id.normal_group, false);
+            toolbar.getMenu().setGroupVisible(R.id.schedule_edit_mode_group, true);
         } else {
-            mTopToolbar.setTitle(getFragmentTitle());
-            mTopToolbar.getMenu().setGroupVisible(R.id.normal_group, true);
-            mTopToolbar.getMenu().setGroupVisible(R.id.schedule_edit_mode_group, false);
+            toolbar.setTitle(getFragmentTitle());
+            toolbar.getMenu().setGroupVisible(R.id.normal_group, true);
+            toolbar.getMenu().setGroupVisible(R.id.schedule_edit_mode_group, false);
         }
     }
 
@@ -317,8 +313,8 @@ public class HomeFragment extends BaseFragment {
     private void scheduleEditModeItemOnClick(View itemView) {
         // TODO: 这里将会有个 EditText 来编辑 这节课
         new AlertDialog.Builder(getContext())
-                .setTitle("TODO")
-                .setMessage("这里将会有个 EditText 来编辑")
+                .setTitle("未完成的功能")
+                .setMessage("这里将会有个 EditText 来编辑内容")
                 .setPositiveButton("哦，我知道了", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

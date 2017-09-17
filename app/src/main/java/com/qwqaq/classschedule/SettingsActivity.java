@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import static com.qwqaq.classschedule.MainApplication.*;
+
 public class SettingsActivity extends PreferenceActivity {
 
     private Toolbar mActionBar;
@@ -112,10 +114,10 @@ public class SettingsActivity extends PreferenceActivity {
     */
 
     private void actionScheduleGoToEditMode() {
-        HomeFragment fragment = (HomeFragment)MainApplication.gFragments[MainActivity.F_HOME];
+        HomeFragment fragment = (HomeFragment)MainApplication.gFragments[F_HOME];
+        ((MainActivity)fragment.getActivity()).onBackToFirstFragment();
         fragment.scheduleEditModeInto();
         finish();
-        ((MainActivity)fragment.getActivity()).onBackToFirstFragment();
         // TODO: 需要回到课程表 Fragment
     }
 }
