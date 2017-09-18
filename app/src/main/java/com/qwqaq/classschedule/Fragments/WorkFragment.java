@@ -1,23 +1,21 @@
-package com.qwqaq.classschedule;
+package com.qwqaq.classschedule.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.qwqaq.classschedule.Base.BaseFragment;
+import com.qwqaq.classschedule.R;
 
 /**
  * Created by Zneia on 2017/9/14.
  */
 
-public class WorkFragment extends BaseFragment {
+public class WorkFragment extends Fragment {
 
     public static WorkFragment newInstance()
     {
@@ -53,7 +51,7 @@ public class WorkFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        mView = inflater.inflate(R.layout.work_fragment, container, false);
+        mView = inflater.inflate(R.layout.fragment_work, container, false);
         context = mView.getContext();
 
         return mView;

@@ -1,4 +1,4 @@
-package com.qwqaq.classschedule;
+package com.qwqaq.classschedule.Fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,10 +18,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.qwqaq.classschedule.Adapter.ScheduleAdapter;
-import com.qwqaq.classschedule.Base.BaseFragment;
-import com.qwqaq.classschedule.Ui.ScheduleGridLayoutManager;
-import com.qwqaq.classschedule.Util.StreamUtil;
+import com.qwqaq.classschedule.Adapters.ScheduleAdapter;
+import com.qwqaq.classschedule.Activities.MainActivity;
+import com.qwqaq.classschedule.R;
+import com.qwqaq.classschedule.Widgets.ScheduleGridLayoutManager;
+import com.qwqaq.classschedule.Utils.StreamUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +34,7 @@ import java.util.Collections;
  * Created by Zneia on 2017/9/14.
  */
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends Fragment {
 
     public static HomeFragment newInstance() {
         Bundle args = new Bundle();
@@ -92,7 +93,7 @@ public class HomeFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.home_fragment, container, false);
+        mView = inflater.inflate(R.layout.fragment_home, container, false);
         context = mView.getContext();
 
         try {

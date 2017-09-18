@@ -1,32 +1,26 @@
-package com.qwqaq.classschedule;
+package com.qwqaq.classschedule.Activities;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.view.Menu;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 
-import com.qwqaq.classschedule.Base.BaseMainActivity;
-import com.qwqaq.classschedule.Base.BaseFragment;
+import com.qwqaq.classschedule.Fragments.HomeFragment;
+import com.qwqaq.classschedule.Fragments.WorkFragment;
+import com.qwqaq.classschedule.R;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import me.yokeyword.fragmentation.SupportFragment;
 
-import static com.qwqaq.classschedule.MainApplication.*;
+import static com.qwqaq.classschedule.Kernel.*;
 
-public class MainActivity extends BaseMainActivity {
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.activity_main);
 
         initFragments();
         initView();
@@ -75,7 +69,7 @@ public class MainActivity extends BaseMainActivity {
 
         }
         if (id == R.id.nav_settings) {
-            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            Intent intent = new Intent(MainActivity.this, SettingActivity.class);
             startActivity(intent);
 
             // 延迟执行，解决卡顿

@@ -1,33 +1,32 @@
-package com.qwqaq.classschedule.Base;
+package com.qwqaq.classschedule.Activities;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.qwqaq.classschedule.HomeFragment;
-import com.qwqaq.classschedule.MainApplication;
+import com.qwqaq.classschedule.Fragments.Fragment;
+import com.qwqaq.classschedule.Fragments.HomeFragment;
+import com.qwqaq.classschedule.Kernel;
 import com.qwqaq.classschedule.R;
-import com.qwqaq.classschedule.WorkFragment;
+import com.qwqaq.classschedule.Fragments.WorkFragment;
 
 import me.yokeyword.fragmentation.SupportActivity;
 
-import static com.qwqaq.classschedule.MainApplication.*;
+import static com.qwqaq.classschedule.Kernel.*;
 
 /**
  * Created by Zneia on 2017/9/15.
  */
 
-public abstract class BaseMainActivity extends SupportActivity implements NavigationView.OnNavigationItemSelectedListener, BaseFragment.OnBackToFirstListener {
+public abstract class Activity extends SupportActivity implements NavigationView.OnNavigationItemSelectedListener, Fragment.OnBackToFirstListener {
 
     /*
     |--------------------------------------------------------------------------
@@ -35,15 +34,15 @@ public abstract class BaseMainActivity extends SupportActivity implements Naviga
     |--------------------------------------------------------------------------
     */
 
-    public BaseFragment[] mFragments;
-    public BaseFragment mCurrentVisibleFragment;
+    public Fragment[] mFragments;
+    public Fragment mCurrentVisibleFragment;
 
     /**
      * 初始化 Fragments
      */
     protected void initFragments() {
-        mFragments = MainApplication.gFragments;
-        BaseFragment firstFragment = findFragment(HomeFragment.class);
+        mFragments = Kernel.gFragments;
+        Fragment firstFragment = findFragment(HomeFragment.class);
         // Fragment
         if (firstFragment == null) {
             mFragments[F_HOME] = HomeFragment.newInstance();
@@ -64,7 +63,7 @@ public abstract class BaseMainActivity extends SupportActivity implements Naviga
     /**
      * 切换 Fragment
      */
-    public void showFragment(BaseFragment fragmentClass) {
+    public void showFragment(Fragment fragmentClass) {
         showHideFragment(fragmentClass);
         // showHideFragment(SupportFragment showFragment, SupportFragment hideFragment);
         mCurrentVisibleFragment = fragmentClass;
@@ -76,7 +75,7 @@ public abstract class BaseMainActivity extends SupportActivity implements Naviga
     /**
      * 获取当前用户可见的 Fragment Class
      */
-    public BaseFragment getCurrentVisibleFragment() {
+    public Fragment getCurrentVisibleFragment() {
         return mCurrentVisibleFragment;
     }
 
@@ -118,6 +117,13 @@ public abstract class BaseMainActivity extends SupportActivity implements Naviga
         mLeftNavigationView.setNavigationItemSelectedListener(this);
     }
 
+    /**
+     * 获取 左侧边栏
+     */
+    public DrawerLayout getLeftDrawer() {
+        return mLeftDrawer;
+    }
+
     // 显示左侧边栏
     public void showLeftDrawer() {
         mLeftDrawer.closeDrawer(GravityCompat.END);
@@ -157,7 +163,7 @@ public abstract class BaseMainActivity extends SupportActivity implements Naviga
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // getMenuInflater().inflate(R.menu.top_toolbar_main_activity, menu);
+        // getMenuInflater().inflate(R.menu.activity_main_top_toolbar, menu);
 
         if (getCurrentVisibleFragment() != null) {
             getCurrentVisibleFragment().onTopToolbarCreateOptionsMenu(menu, getMenuInflater());

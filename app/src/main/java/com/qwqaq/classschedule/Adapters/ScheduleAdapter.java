@@ -1,4 +1,4 @@
-package com.qwqaq.classschedule.Adapter;
+package com.qwqaq.classschedule.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.qwqaq.classschedule.R;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 

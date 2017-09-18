@@ -1,26 +1,24 @@
-package com.qwqaq.classschedule;
+package com.qwqaq.classschedule.Activities;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.preference.Preference;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import static com.qwqaq.classschedule.MainApplication.*;
+import com.qwqaq.classschedule.Fragments.HomeFragment;
+import com.qwqaq.classschedule.Kernel;
+import com.qwqaq.classschedule.R;
 
-public class SettingsActivity extends PreferenceActivity {
+import static com.qwqaq.classschedule.Kernel.*;
+
+public class SettingActivity extends PreferenceActivity {
 
     private Toolbar mActionBar;
 
@@ -34,7 +32,7 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     public void setContentView(int layoutResID) {
         ViewGroup contentView = (ViewGroup) LayoutInflater.from(this).inflate(
-                R.layout.activity_settings, new LinearLayout(this), false);
+                R.layout.activity_setting, new LinearLayout(this), false);
 
         // 初始化工具条
         mActionBar = (Toolbar) contentView.findViewById(R.id.action_bar);
@@ -62,7 +60,7 @@ public class SettingsActivity extends PreferenceActivity {
      */
     public static class SettingsPreferenceFragment extends PreferenceFragment {
 
-        private SettingsActivity mActivity;
+        private SettingActivity mActivity;
         private View mView;
 
         @Override
@@ -74,7 +72,7 @@ public class SettingsActivity extends PreferenceActivity {
         }
 
         public void initView() {
-            mActivity = ((SettingsActivity) getActivity());
+            mActivity = ((SettingActivity) getActivity());
             mView = mActivity.getListView();
 
             addPreferencesFromResource(R.xml.preferences);
@@ -114,7 +112,7 @@ public class SettingsActivity extends PreferenceActivity {
     */
 
     private void actionScheduleGoToEditMode() {
-        HomeFragment fragment = (HomeFragment)MainApplication.gFragments[F_HOME];
+        HomeFragment fragment = (HomeFragment) Kernel.gFragments[F_HOME];
         ((MainActivity)fragment.getActivity()).onBackToFirstFragment();
         fragment.scheduleEditModeInto();
         finish();

@@ -1,8 +1,7 @@
-package com.qwqaq.classschedule.Ui;
+package com.qwqaq.classschedule.Widgets;
 
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
-import android.util.AttributeSet;
 
 /**
  * Created by Zneia on 2017/9/16.

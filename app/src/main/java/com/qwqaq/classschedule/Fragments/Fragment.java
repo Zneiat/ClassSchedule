@@ -1,25 +1,13 @@
-package com.qwqaq.classschedule.Base;
+package com.qwqaq.classschedule.Fragments;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.qwqaq.classschedule.HomeFragment;
-import com.qwqaq.classschedule.R;
+import com.qwqaq.classschedule.Activities.Activity;
 
 import me.yokeyword.fragmentation.SupportFragment;
 
@@ -27,7 +15,7 @@ import me.yokeyword.fragmentation.SupportFragment;
  * Created by Zneia on 2017/9/15.
  */
 
-public abstract class BaseFragment extends SupportFragment {
+public abstract class Fragment extends SupportFragment {
 
     protected OnBackToFirstListener _mBackToFirstListener;
 
@@ -80,9 +68,9 @@ public abstract class BaseFragment extends SupportFragment {
         // 隐藏软键盘
         hideSoftInput();
 
-        if (((BaseMainActivity) getActivity()).mLeftDrawer.isDrawerOpen(GravityCompat.START)) {
+        if (((Activity) getActivity()).getLeftDrawer().isDrawerOpen(GravityCompat.START)) {
             // 隐藏侧边栏
-            ((BaseMainActivity) getActivity()).mLeftDrawer.closeDrawer(GravityCompat.START);
+            ((Activity) getActivity()).getLeftDrawer().closeDrawer(GravityCompat.START);
             return true;
         }
 

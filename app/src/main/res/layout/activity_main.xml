@@ -11,11 +11,11 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.qwqaq.classschedule.MainActivity">
+        tools:context="com.qwqaq.classschedule.Activities.MainActivity">
 
-        <include layout="@layout/top_toolbar_main_activity" />
+        <include layout="@layout/activity_main_top_toolbar" />
 
-        <include layout="@layout/content_main_activity" />
+        <include layout="@layout/activity_main_content" />
 
     </android.support.design.widget.CoordinatorLayout>
 
@@ -25,7 +25,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main_activity"
+        app:headerLayout="@layout/activity_main_left_nav_header"
         app:menu="@menu/main_activity_drawer" />
 
 </android.support.v4.widget.DrawerLayout>
