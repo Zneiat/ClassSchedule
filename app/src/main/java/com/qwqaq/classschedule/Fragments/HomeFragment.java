@@ -21,7 +21,7 @@ import android.view.ViewGroup;
 import com.qwqaq.classschedule.Adapters.ScheduleAdapter;
 import com.qwqaq.classschedule.Activities.MainActivity;
 import com.qwqaq.classschedule.R;
-import com.qwqaq.classschedule.Widgets.ScheduleGridLayoutManager;
+import com.qwqaq.classschedule.Components.ScheduleGridLayoutManager;
 import com.qwqaq.classschedule.Utils.StreamUtil;
 
 import org.json.JSONArray;

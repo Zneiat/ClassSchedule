@@ -1,4 +1,4 @@
-package com.qwqaq.classschedule.Widgets;
+package com.qwqaq.classschedule.Components;
 
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
