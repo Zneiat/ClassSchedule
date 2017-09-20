@@ -114,7 +114,7 @@ public class SettingActivity extends PreferenceActivity {
     private void actionScheduleGoToEditMode() {
         HomeFragment fragment = (HomeFragment) Kernel.gFragments[F_HOME];
         ((MainActivity)fragment.getActivity()).onBackToFirstFragment();
-        fragment.scheduleEditModeInto();
+        fragment.getScheduleView().editModeEntry();
         finish();
         // TODO: 需要回到课程表 Fragment
     }

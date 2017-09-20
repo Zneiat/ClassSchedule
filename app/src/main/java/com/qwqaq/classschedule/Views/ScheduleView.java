@@ -1,10 +1,12 @@
 package com.qwqaq.classschedule.Views;
 
 import android.content.Context;
-import android.support.design.widget.Snackbar;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.AttributeSet;
 import android.view.View;
 
 import com.qwqaq.classschedule.Adapters.ScheduleAdapter;
@@ -22,8 +24,8 @@ public class ScheduleView extends RecyclerView {
 
     /**
      * TODO: ScheduleView 未来计划：
-     * 1. 数据导入
-     * 2. 自定义点击事件
+     * √ 1. 数据导入
+     * √ 2. 自定义点击事件
      * 3. 精准获取 (x, y)
      * 4. (x, y) 转自定义规则内容
      * 5. 自定义更多事件
@@ -35,10 +37,28 @@ public class ScheduleView extends RecyclerView {
         super(context, null);
     }
 
-    private ArrayList<String> mData = new ArrayList<>(); // 数据 TODO: 数据导入自定义
+    public ScheduleView(Context context, AttributeSet attri) {
+        super(context, attri);
+    }
+    public ScheduleView(Context context, AttributeSet attri, int defStyle) {
+        super(context, attri, defStyle);
+    }
+
+    private ScheduleOptions mOptions; // 配置
+    private ArrayList<String> mData; // 数据
+    private ScheduleEvents mEvents; // 自定义事件
     private ScheduleAdapter mAdapter; // 适配器
-    private static final int COL_COUNT = 6; // 指定列数
-    private static boolean EDIT_MODE = false; // 编辑模式
+    private static int COL_COUNT = 6; // 指定列数
+    private static boolean IN_EDIT_MODE = false; // 编辑模式
+
+    public void initSchedule(ScheduleOptions options, ScheduleEvents events) {
+        mOptions = options;
+        mData = options.getData();
+        mEvents = events;
+        COL_COUNT = options.getColCount();
+
+        initView();
+    }
 
     /**
      * 初始化整个界面
@@ -68,18 +88,36 @@ public class ScheduleView extends RecyclerView {
         ScheduleAdapter.ItemClickListener itemClickListener = new ScheduleAdapter.ItemClickListener() {
             @Override
             public void onClick(View itemView) {
-                // TODO: 单击事件（做成自定义事件）
+                if (IN_EDIT_MODE) {
+                    // 编辑模式单击
+                    editModeItemOnClick(itemView);
+                    return;
+                }
+
+                mEvents.onItemClick(itemView);
             }
 
             @Override
             public boolean onLongClick(View itemView) {
-                // TODO: 长按事件（做成自定义事件）
+                if (IN_EDIT_MODE) {
+                    return true;
+                }
+
+                mEvents.onItemLong(itemView);
+
                 return true;
             }
         };
 
         mAdapter = new ScheduleAdapter(getContext(), COL_COUNT, mData, itemClickListener);
         this.setAdapter(mAdapter); // adapter 应用到 RecyclerView
+    }
+
+    /**
+     * 获取 是否处于编辑模式
+     */
+    public boolean getIsInEditMode() {
+        return IN_EDIT_MODE;
     }
 
     /**
@@ -131,7 +169,7 @@ public class ScheduleView extends RecyclerView {
             // 允许拖动编辑
             @Override
             public boolean isLongPressDragEnabled() {
-                return EDIT_MODE;
+                return IN_EDIT_MODE;
             }
 
             @Override
@@ -144,30 +182,68 @@ public class ScheduleView extends RecyclerView {
     }
 
     /**
+     * 课程表 编辑模式 单个 View 点击事件
+     */
+    private void editModeItemOnClick(View itemView) {
+        // TODO: 这里将会有个 EditText 来编辑 这节课
+        new AlertDialog.Builder(getContext())
+                .setTitle("未完成的功能")
+                .setMessage("这里将会有个 EditText 来编辑内容")
+                .setPositiveButton("哦，我知道了", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }).show();
+    }
+
+    /**
      * 编辑模式 进入
      */
-    public void scheduleEditModeInto() {
+    public void editModeEntry() {
 
-        EDIT_MODE = true;
-        // TODO: 修改 TopNavBar 状态内容（自定义事件）
+        IN_EDIT_MODE = true;
 
-        Snackbar.make(getRootView(), "单击编辑内容 长按拖动位置", Snackbar.LENGTH_LONG).show();
+        mEvents.afterEditModeEntry();
     }
 
     /**
      * 编辑模式 退出
-     * @param saveData 是否保存编辑数据
+     * @param needSaveData 是否需要保存编辑数据
      */
-    public void scheduleEditModeExit(boolean saveData) {
-        if (saveData) {
-            Snackbar.make(getRootView(), "编辑已保存 [其实并未保存，以后再完成这个功能]", Snackbar.LENGTH_LONG).show();
-        } else {
-            Snackbar.make(getRootView(), "编辑未保存", Snackbar.LENGTH_LONG).show();
+    public void editModeExit(boolean needSaveData) {
+        if (mEvents.afterEditModeExit(needSaveData)) {
+            IN_EDIT_MODE = false;
+        }
+    }
+
+    /**
+     * 课程表配置
+     */
+    public static class ScheduleOptions {
+        public ArrayList<String> getData() {
+            return new ArrayList<String>();
         }
 
-        // TODO: 保存操作
+        public int getColCount() {
+            return 6;
+        }
+    }
 
-        EDIT_MODE = false;
-        // TODO: 修改 TopNavBar 状态内容（自定义事件）
+    /**
+     * 课程表事件
+     */
+    public static class ScheduleEvents {
+        // 项目单击
+        public void onItemClick(View itemView) {}
+
+        // 项目长按
+        public void onItemLong(View itemView) {}
+
+        // 编辑模式进入
+        public void afterEditModeEntry() {}
+
+        // 编辑模式退出
+        public boolean afterEditModeExit(boolean needSaveData) { return true; }
     }
 }

@@ -23,6 +23,7 @@ import com.qwqaq.classschedule.Activities.MainActivity;
 import com.qwqaq.classschedule.R;
 import com.qwqaq.classschedule.Components.ScheduleGridLayoutManager;
 import com.qwqaq.classschedule.Utils.StreamUtil;
+import com.qwqaq.classschedule.Views.ScheduleView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,9 +46,6 @@ public class HomeFragment extends Fragment {
         return fragment;
     }
 
-    private View mView;
-    private Context context;
-
     @Override
     public String getFragmentTitle() {
         return "课程表";
@@ -58,7 +56,7 @@ public class HomeFragment extends Fragment {
      */
     public void onTopToolbarCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.top_toolbar_home_fragment, menu);
-        syncTopToolbarScheduleEditModeMenu();
+        syncToolbarEditModeMenu();
     }
 
     /**
@@ -82,13 +80,18 @@ public class HomeFragment extends Fragment {
         // 课程表 编辑模式
         if (id == R.id.action_save_edit) {
             // 保存
-            scheduleEditModeExit(true);
+            mScheduleView.editModeExit(true);
         }
         if (id == R.id.action_give_up_edit) {
             // 放弃保存
-            scheduleEditModeExit(false);
+            mScheduleView.editModeExit(false);
         }
     }
+
+    private View mView;
+    private Context context;
+    private ArrayList<String> mScheduleData = new ArrayList<>();
+    private ScheduleView mScheduleView;
 
     @Nullable
     @Override
@@ -115,8 +118,6 @@ public class HomeFragment extends Fragment {
         return mView;
     }
 
-    private ArrayList<String> mScheduleData = new ArrayList<>();
-
     /**
      * 初始化课程表 数据
      */
@@ -134,109 +135,65 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private RecyclerView mScheduleRecyclerView;
-    private ScheduleAdapter mScheduleAdapter;
-
     /**
      * 初始化课程表 界面
      */
     private void initScheduleView() {
-        mScheduleRecyclerView = mView.findViewById(R.id.schedule);
+        mScheduleView = mView.findViewById(R.id.schedule);
 
-        // 设置 Recycler 布局
-        ScheduleGridLayoutManager gridLayoutManager = new ScheduleGridLayoutManager(this.getContext(), RECYCLER_COL_COUNT);
-        gridLayoutManager.setScrollEnabled(false);
-        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+        ScheduleView.ScheduleOptions options = new ScheduleView.ScheduleOptions() {
             @Override
-            public int getSpanSize(int position) {
-                return 1; // 单个项目 占一列
+            public ArrayList<String> getData() {
+                return mScheduleData;
             }
-        });
-        mScheduleRecyclerView.setLayoutManager(gridLayoutManager);
+        };
 
-        initScheduleAdapter();
-        initScheduleEditMode();
-    }
-
-    /**
-     * 初始化课程表 Adapter
-     */
-    private void initScheduleAdapter() {
-        // 项目点击监听
-        ScheduleAdapter.ItemClickListener itemClickListener = new ScheduleAdapter.ItemClickListener() {
+        ScheduleView.ScheduleEvents events = new ScheduleView.ScheduleEvents() {
             @Override
-            public void onClick(View itemView) {
-                if (RECYCLER_EDIT_MODE) {
-                    // 编辑模式单击
-                    scheduleEditModeItemOnClick(itemView);
-                    return;
-                }
-
+            public void onItemClick(View itemView) {
                 Snackbar.make(mView, "点击 " + itemView.getTag(), Snackbar.LENGTH_LONG).show();
             }
 
             @Override
-            public boolean onLongClick(View itemView) {
-                if (RECYCLER_EDIT_MODE) {
-                    // 编辑模式长按
-                    return true;
+            public void onItemLong(View itemView) {
+                Snackbar.make(mView, "长按 " + itemView.getTag(), Snackbar.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void afterEditModeEntry() {
+                syncToolbarEditModeMenu(true);
+                Snackbar.make(mView, "单击编辑内容 长按拖动位置", Snackbar.LENGTH_LONG).show();
+            }
+
+            @Override
+            public boolean afterEditModeExit(boolean needSaveData) {
+                if (needSaveData) {
+                    Snackbar.make(mView, "编辑已保存 [其实并未保存，以后再完成这个功能]", Snackbar.LENGTH_LONG).show();
+                } else {
+                    Snackbar.make(mView, "编辑未保存", Snackbar.LENGTH_LONG).show();
                 }
 
-                Snackbar.make(mView, "长按 " + itemView.getTag(), Snackbar.LENGTH_LONG).show();
+                syncToolbarEditModeMenu(false);
+
                 return true;
             }
         };
 
-        mScheduleAdapter = new ScheduleAdapter(getContext(), RECYCLER_COL_COUNT, mScheduleData, itemClickListener);
-        mScheduleRecyclerView.setAdapter(mScheduleAdapter); // adapter 应用到 RecyclerView
-    }
+        mScheduleView.initSchedule(options, events);
 
-    /*
-    |--------------------------------------------------------------------------
-    | 课程表 编辑模式
-    |--------------------------------------------------------------------------
-    |
-    | All About Schedule Edit Mode...
-    |
-    */
-    private static final int RECYCLER_COL_COUNT = 6; // 指定列数
-    private static boolean RECYCLER_EDIT_MODE = false; // 编辑模式
-
-    /**
-     * 编辑模式 进入
-     */
-    public void scheduleEditModeInto() {
-
-        RECYCLER_EDIT_MODE = true;
-        syncTopToolbarScheduleEditModeMenu(); // 必须保持在后
-
-        Snackbar.make(mView, "单击编辑内容 长按拖动位置", Snackbar.LENGTH_LONG).show();
-    }
-
-    /**
-     * 编辑模式 退出
-     * @param saveData 是否保存编辑数据
-     */
-    public void scheduleEditModeExit(boolean saveData) {
-        if (saveData) {
-            Snackbar.make(mView, "编辑已保存 [其实并未保存，以后再完成这个功能]", Snackbar.LENGTH_LONG).show();
-        } else {
-            Snackbar.make(mView, "编辑未保存", Snackbar.LENGTH_LONG).show();
-        }
-
-        // TODO: 保存操作
-
-        RECYCLER_EDIT_MODE = false;
-        syncTopToolbarScheduleEditModeMenu();
     }
 
     /**
      * 同步 顶部 Toolbar 课程表 编辑模式
      */
-    public void syncTopToolbarScheduleEditModeMenu() {
+    public void syncToolbarEditModeMenu() {
+        syncToolbarEditModeMenu(mScheduleView.getIsInEditMode());
+    }
+
+    public void syncToolbarEditModeMenu(boolean isInEditMode) {
         MainActivity mainActivity = (MainActivity) getActivity();
         Toolbar toolbar = mainActivity.getTopToolBar();
-        if (RECYCLER_EDIT_MODE) {
+        if (isInEditMode) {
             toolbar.setTitle("编辑模式");
             toolbar.getMenu().setGroupVisible(R.id.normal_group, false);
             toolbar.getMenu().setGroupVisible(R.id.schedule_edit_mode_group, true);
@@ -248,79 +205,9 @@ public class HomeFragment extends Fragment {
     }
 
     /**
-     * 初始化课程表 编辑模式
+     * 获取 ScheduleView
      */
-    private void initScheduleEditMode() {
-        // 长按拖动 编辑操作
-        int dragDirs = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
-        ItemTouchHelper.SimpleCallback editModeItemTouchCallback = new ItemTouchHelper.SimpleCallback(dragDirs, 0) {
-
-            // 用户正在进行拖动操作时执行
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                final int fromPosition = viewHolder.getAdapterPosition();
-                final int toPosition = target.getAdapterPosition();
-
-                // 如果是在第一行，不允许拖动更改位置
-                if (fromPosition + 1 <= RECYCLER_COL_COUNT || toPosition + 1 <= RECYCLER_COL_COUNT) {
-                    return false;
-                }
-
-                // 修改 数据列表 中的项目位置
-                if (fromPosition < toPosition) {
-                    for (int i = fromPosition; i < toPosition; i++) {
-                        Collections.swap(mScheduleData, i, i + 1);
-                    }
-                } else {
-                    for (int i = fromPosition; i > toPosition; i--) {
-                        Collections.swap(mScheduleData, i, i - 1);
-                    }
-                }
-
-                mScheduleAdapter.notifyItemMoved(fromPosition, toPosition);
-                return true;
-            }
-
-            // 拖动操作结束时执行
-            @Override
-            public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                super.clearView(recyclerView, viewHolder);
-
-                /*JSONArray jsonArr = new JSONArray();
-                for (String item : mScheduleData) {
-                    jsonArr.put(item);
-                }
-                Log.d("!!! DATA TEST !!!", jsonArr.toString());*/
-            }
-
-            // 允许拖动编辑
-            @Override
-            public boolean isLongPressDragEnabled() {
-                return RECYCLER_EDIT_MODE;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {}
-        };
-
-        // itemTouchHelper 应用到 RecyclerView
-        ItemTouchHelper editModeItemTouchHelper = new ItemTouchHelper(editModeItemTouchCallback);
-        editModeItemTouchHelper.attachToRecyclerView(mScheduleRecyclerView);
-    }
-
-    /**
-     * 课程表 编辑模式 单个 View 点击事件
-     */
-    private void scheduleEditModeItemOnClick(View itemView) {
-        // TODO: 这里将会有个 EditText 来编辑 这节课
-        new AlertDialog.Builder(getContext())
-                .setTitle("未完成的功能")
-                .setMessage("这里将会有个 EditText 来编辑内容")
-                .setPositiveButton("哦，我知道了", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                }).show();
+    public ScheduleView getScheduleView() {
+        return mScheduleView;
     }
 }
