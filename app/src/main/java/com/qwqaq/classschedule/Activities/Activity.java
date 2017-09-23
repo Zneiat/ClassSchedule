@@ -149,6 +149,9 @@ public abstract class Activity extends SupportActivity implements NavigationView
         ActionBarDrawerToggle leftDrawerDisplayToggle = new ActionBarDrawerToggle(this, mLeftDrawer, mTopToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mLeftDrawer.setDrawerListener(leftDrawerDisplayToggle);
         leftDrawerDisplayToggle.syncState();
+
+        // LeftDrawer Disable Elevation
+        mLeftDrawer.setDrawerElevation(0);
     }
 
     /**

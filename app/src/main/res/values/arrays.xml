@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="schedule_col_names_list">
+        <item>正常工作日</item>
+        <item>工作日和周六</item>
+        <item>工作日和整个周末</item>
+    </string-array>
+    <string-array name="schedule_col_names_value">
+        <item>WorkingDay</item>
+        <item>WorkingDayWithSat</item>
+        <item>AllWeek</item>
+    </string-array>
+</resources>

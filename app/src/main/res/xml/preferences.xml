@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout="@layout/preference_item">
+    android:layout_height="match_parent">
 
     <PreferenceCategory
-        android:layout="@layout/preference_category_widget"
         android:title="课程表">
         <Preference
             android:key="schedule_go_to_edit_mode"
-            android:layout="@layout/preference_item"
             android:title="编辑课程表"
             android:summary="进入课程表编辑模式" />
     </PreferenceCategory>
@@ -23,16 +20,39 @@
             android:summary="仅在Wi-Fi环境下才自动加载图片" />
     </PreferenceCategory>-->
 
+    <EditTextPreference
+        android:key="schedule_everyday_class_count"
+        android:title="单天课程节数"
+        android:numeric="integer"
+        android:summary="设定单天要上的课程节数"
+        android:defaultValue="8" />
+
+    <ListPreference
+        android:key="schedule_fist_col_type"
+        android:title="课程表字段选择"
+        android:summary="通过选择来调整课程表第一行内容的显示或隐藏"
+        android:entries="@array/schedule_col_names_list"
+        android:entryValues="@array/schedule_col_names_value" />
+
+    <EditTextPreference
+        android:key="schedule_edit_by_json"
+        android:title="JSON 编辑"
+        android:summary="通过 JSON 来编辑课程表"
+        android:inputType="textMultiLine"
+        android:defaultValue="[]" />
+
+    <SwitchPreference
+        android:title="课程提醒"
+        android:summary="具体时间可通过 “编辑课程表” 来设定" />
+
     <PreferenceCategory
-        android:layout="@layout/preference_category_widget"
         android:title="关于">
         <Preference
-            android:layout="@layout/preference_item"
+            android:key="current_version"
             android:title="当前版本"
-            android:summary="1.0" />
+            android:summary="未知" />
         <Preference
-            android:key="blog"
-            android:layout="@layout/preference_item"
+            android:key="blog_link"
             android:title="ZNEIAT"
             android:summary="博客：www.qwqaq.com" />
     </PreferenceCategory>

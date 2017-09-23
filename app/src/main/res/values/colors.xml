@@ -6,7 +6,7 @@
 
     <color name="colorWhite">#FFF</color>
 
-    <color name="bgGray">#ececec</color>
+    <color name="bgGray">#F3F3F3</color>
     <color name="bgBnav">#FFF</color>
 
     <color name="BnavTabUnselect">#ffbababa</color>

@@ -151,12 +151,16 @@ public class HomeFragment extends Fragment {
         ScheduleView.ScheduleEvents events = new ScheduleView.ScheduleEvents() {
             @Override
             public void onItemClick(View itemView) {
-                Snackbar.make(mView, "点击 " + itemView.getTag(), Snackbar.LENGTH_LONG).show();
+                ScheduleView.ScheduleItemTag tagObj = (ScheduleView.ScheduleItemTag) itemView.getTag();
+
+                Snackbar.make(mView, "点击 " + tagObj.getRowNum(), Snackbar.LENGTH_LONG).show();
             }
 
             @Override
             public void onItemLong(View itemView) {
-                Snackbar.make(mView, "长按 " + itemView.getTag(), Snackbar.LENGTH_LONG).show();
+                ScheduleView.ScheduleItemTag tagObj = (ScheduleView.ScheduleItemTag) itemView.getTag();
+
+                Snackbar.make(mView, "长按 " + tagObj.getRowNum(), Snackbar.LENGTH_LONG).show();
             }
 
             @Override

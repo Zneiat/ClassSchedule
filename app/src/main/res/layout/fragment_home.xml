@@ -14,6 +14,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorWhite"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:paddingTop="15dp"
             android:paddingBottom="15dp" />
 

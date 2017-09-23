@@ -1,7 +1,10 @@
 package com.qwqaq.classschedule.Activities;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -63,12 +66,15 @@ public class SettingActivity extends PreferenceActivity {
         private SettingActivity mActivity;
         private View mView;
 
+
+
         @Override
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
             initView();
-            initPreferenceListener();
+            initPreference();
+            initPreferenceFunc();
         }
 
         public void initView() {
@@ -78,17 +84,33 @@ public class SettingActivity extends PreferenceActivity {
             addPreferencesFromResource(R.xml.preferences);
         }
 
-        public void initPreferenceListener() {
-            Preference goToScheduleEditMode = findPreference("schedule_go_to_edit_mode");
-            goToScheduleEditMode.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        Preference scheduleGoToEditMode;
+        ListPreference scheduleFistColType;
+        Preference currentVersion;
+        Preference blogLink;
+
+        public void initPreference() {
+            scheduleGoToEditMode = (Preference) findPreference("schedule_go_to_edit_mode");
+            scheduleFistColType = (ListPreference) findPreference("schedule_fist_col_type");
+            currentVersion = (Preference) findPreference("current_version");
+            blogLink = (Preference) findPreference("blog_link");
+        }
+
+        public void initPreferenceFunc() {
+            if(scheduleFistColType.getValue() == null){
+                scheduleFistColType.setValueIndex(1);
+            }
+
+            scheduleGoToEditMode.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
                     mActivity.actionScheduleGoToEditMode();
                     return true;
                 }
             });
 
-            Preference blogPref = findPreference("blog");
-            blogPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            currentVersion.setSummary(getAppVersion());
+
+            blogLink.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
@@ -100,6 +122,20 @@ public class SettingActivity extends PreferenceActivity {
             });
         }
 
+        /**
+         * 获取版本号
+         * @return 当前应用的版本号
+         */
+        public String getAppVersion() {
+            try {
+                PackageManager manager = getActivity().getPackageManager();
+                PackageInfo info = manager.getPackageInfo(getActivity().getPackageName(), 0);
+                return info.versionName;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "未知";
+            }
+        }
     }
 
     /*

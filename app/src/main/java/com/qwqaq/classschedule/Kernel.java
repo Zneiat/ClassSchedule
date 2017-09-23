@@ -1,6 +1,7 @@
 package com.qwqaq.classschedule;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.qwqaq.classschedule.Fragments.Fragment;
 
@@ -8,15 +9,14 @@ import com.qwqaq.classschedule.Fragments.Fragment;
  * Created by Zneia on 2017/4/16.
  */
 
-public class Kernel extends Application
-{
+public class Kernel extends Application {
+
     public static Fragment[] gFragments = new Fragment[2];
     public static final int F_HOME = 0;
     public static final int F_WORK = 1;
 
     @Override
-    public void onCreate()
-    {
+    public void onCreate() {
         super.onCreate();
 
         gFragments = new Fragment[2];

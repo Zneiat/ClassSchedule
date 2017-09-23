@@ -7,11 +7,14 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.qwqaq.classschedule.Adapters.ScheduleAdapter;
 import com.qwqaq.classschedule.Components.ScheduleGridLayoutManager;
+import com.qwqaq.classschedule.Components.ScheduleGridPaddingItemDecoration;
 import com.qwqaq.classschedule.R;
+import com.qwqaq.classschedule.Utils.DisplayUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -109,7 +112,7 @@ public class ScheduleView extends RecyclerView {
             }
         };
 
-        mAdapter = new ScheduleAdapter(getContext(), COL_COUNT, mData, itemClickListener);
+        mAdapter = new ScheduleAdapter(getContext(), this, COL_COUNT, mData, itemClickListener);
         this.setAdapter(mAdapter); // adapter 应用到 RecyclerView
     }
 
@@ -151,6 +154,7 @@ public class ScheduleView extends RecyclerView {
                 }
 
                 mAdapter.notifyItemMoved(fromPosition, toPosition);
+
                 return true;
             }
 
@@ -204,6 +208,9 @@ public class ScheduleView extends RecyclerView {
 
         IN_EDIT_MODE = true;
 
+        // 所有 Item 都显示阴影
+        mAdapter.displayItemShadow(true);
+
         mEvents.afterEditModeEntry();
     }
 
@@ -214,6 +221,7 @@ public class ScheduleView extends RecyclerView {
     public void editModeExit(boolean needSaveData) {
         if (mEvents.afterEditModeExit(needSaveData)) {
             IN_EDIT_MODE = false;
+            mAdapter.displayItemShadow(false);
         }
     }
 
@@ -245,5 +253,15 @@ public class ScheduleView extends RecyclerView {
 
         // 编辑模式退出
         public boolean afterEditModeExit(boolean needSaveData) { return true; }
+    }
+
+    public static class ScheduleItemTag {
+        private int mRowNum;
+        public ScheduleItemTag setRowNum(int value) { mRowNum = value; return this; }
+        public int getRowNum() { return mRowNum; }
+
+        private int mColNum;
+        public ScheduleItemTag setColNum(int value) { mColNum = value; return this; }
+        public int getColNum() { return mColNum; }
     }
 }
